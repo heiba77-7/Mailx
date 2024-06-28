@@ -1,0 +1,482 @@
+/* Body */
+
+* {
+  font-family: "Kanit", sans-serif;
+}
+html,body{
+  overflow-x: hidden;
+}
+body {
+  background-image: url(../images/world-map-cyber-security-ivcowv89j1g1ff4m.jpg);
+  height: 100vh;
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  -ms-overflow-style: none; /* for Internet Explorer, Edge */
+  scrollbar-width: none; /* for Firefox */
+  overflow-y: scroll; 
+}
+body::-webkit-scrollbar {
+  display: none; /* for Chrome, Safari, and Opera */
+}
+.allpage {
+  background-color: #000000be;
+  height: 100vh;
+  width: 800px;
+}
+/* Nav Bar */
+
+li {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+  color: #fff;
+  font-size: 1rem;
+}
+
+.nav a:hover {
+  color: #00eaff;
+  border: 2px  #0ef solid;
+  padding:10px;
+  border-radius: 5px;
+  
+}
+
+header {
+  position: relative;
+  padding: 0 2rem;
+}
+
+.navbar {
+  width: 100%;
+  height: 60px;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.navbar .logo div {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color:white;
+}
+
+.navbar .nav ul {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+  margin-left: auto;
+  margin-right: 0;
+}
+
+.navbar .menu {
+  color: #fff;
+  font-size: 1.5rem;
+  cursor: pointer;
+  display: none;
+}
+
+.navbar .highlight {
+  display: block;
+  margin-left: 0;
+  margin-right: 1rem;
+}
+
+.highlight {
+  background-color: #0ef;
+  color: #fff;
+  padding: 0.5rem 1rem;
+  border: none;
+  outline: none;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: scale 0.2s ease;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.highlight:hover {
+  transform: scale(1.05);
+  color: #000;
+}
+
+.highlight:active {
+  transform: scale(0.95);
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 60px;
+  width: 250px;
+  height: 0;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(15px);
+  border-radius: 10px;
+  overflow: hidden;
+  display: none;
+  z-index: 100;
+}
+
+.dropdown-menu li {
+  padding: 0.7rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dropdown-menu .highlight {
+  width: 80%;
+  display: flex;
+  justify-content: center;
+}
+
+.dropdown-menu.open {
+  height: 325px;
+  width: 100%;
+  max-width: 100%;
+  left: 0;
+  right: 0;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  height: 100vh;
+  background-color: transparent;
+}
+
+/* Nav Bar Ends */
+
+/* Responsive */
+
+@media (max-width: 992px) {
+  .navbar .nav ul {
+    display: none;
+  }
+
+  .navbar .menu {
+    display: flex;
+  }
+
+  .navbar .menu i {
+    display: inline-block;
+  }
+
+  .navbar .highlight {
+    display: none;
+  }
+  .content {
+    width: 100%;
+  }
+  .content section {
+    width: 100%;
+  }
+  .dropdown-menu {
+    display: block;
+  }
+
+  .dropdown-menu .highlight {
+    display: block;
+    margin-top: 1rem;
+  }
+
+  .content section {
+    width: 100%;
+  }
+}
+.right{
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.right div{
+  width: 80%;
+}
+.content {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  width: 100%;
+}
+
+.content section {
+  width: 100%;
+}
+.rightcontent {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  height: 500px;
+}
+.rightcontent div {
+  width: 80%;
+}
+.right .header h1 {
+  text-align: center;
+  font-size: 2rem;
+}
+.drop-zone {
+  width: calc(100% - 50px); /* Full width minus padding */
+  height: 200px; /* Fixed height */
+  padding: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 20px;
+  cursor: pointer;
+  color: #ffffff;
+  border: 4px dashed #0ef; /* Black color */
+  border-radius: 10px;
+  margin: 20px 0px;
+  transition: border 0.3s;
+}
+.drop-zone--over {
+  border-style: solid;
+}
+
+.button {
+  display: flex;
+  justify-content: center;
+}
+
+.button button {
+  color: #00eaff;
+  background-color: white;
+  width: 200px;
+  height: 50px;
+  font-size: 1.2rem;
+  border-radius: 30px;
+  border: 3px #00eaff soli;
+}
+button:hover {
+  background-color: #00eaff;
+  color: white;
+  cursor: pointer;
+}
+#result {
+  margin-top: 20px;
+  font-size: 18px;
+  color: white;
+}
+/*members*/
+.memberheader{
+  width:100%;
+}
+.memberheader h1{
+  text-align: center;
+  font-size:2rem;
+  color:#0ef ;
+}
+.card .name a:hover{
+  color:#0ef;
+  font-size: 1.1rem;
+}
+.content .card {
+  width: 80%;
+  height: 300px;
+  border: 2px solid #0ef ;
+  display:flex;
+  padding: 7px;
+  justify-content: center;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  margin-left:20px;
+  border-radius: 10px;
+  margin-top: 15px;
+  
+}
+.content .card div{
+  width:100%;
+  text-align: center;
+}
+
+.content .card .image{
+  width:100%;
+  height: 160px;
+  overflow: hidden;
+  border-top-left-radius: 9px;
+  border-top-right-radius: 9px;
+
+}
+.image img{
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  margin-top: 10px;
+
+}
+.card .name h3{
+  margin-block: 0px;
+  margin-top: 10px;
+  font-size:1.3rem;
+
+  font-weight: bold;
+}
+.card .job h4{
+  margin-block: 0px;
+  margin-top: 10px;
+  color:#0ef ;
+  font-size: 1.1rem
+}
+.card .breif{
+  margin-top: 10px;
+}
+
+.abouttoolheader{
+  text-align: center;
+  font-size:1.5rem;
+  width: 100%;
+}
+
+.abouttoolheader h1{
+  text-align: center;
+  margin-block: 0px;
+  margin-top: 15px;
+  font-size: 2.6rem;
+  color:#0ef;
+}
+
+.toolbrief .briefheader{
+  text-align: start;
+  color:#0ef;
+  width:100%;
+}
+.toolbrief .briefheader h2{
+  margin-top: 15px;
+  margin-block: 0px;
+  font-size:1.4rem;
+}
+.toolbrief .briefcontent {
+  width:100%
+}
+.toolbrief .briefcontent h5{
+  margin-block: 0px;
+  margin-top:5px;
+  color:white;
+  font-size: 1.2rem;
+}
+.finalyheader{
+  text-align: start;
+}
+.mech .mechheader h2{
+  color:#0ef;
+  font-size: 1.4rem;
+  margin-block: 0px;
+  margin-top: 15px;
+  margin-bottom: 10px;
+}
+.mech ol {
+  margin-block: none;
+  margin-top: 10px;
+  padding: 0;
+  list-style-type: none;
+  counter-reset: my-awesome-counter;
+}
+ol li {
+  counter-increment: my-awesome-counter;
+  font-size: 1.2rem;
+  margin-top:10px;
+  color:white;
+}
+ol li::before {
+  content: counter(my-awesome-counter) ". ";
+  color: #0ef;
+  font-weight: bold;
+  position: relative;
+  top: 100%;
+}
+.finalyheader h2{
+  margin-top: 15px;
+  margin-block: 0px;
+  font-size:1.4rem;
+  color: #0ef;
+}
+.finalycontent h5{
+  margin-block: 0px;
+  margin-top:5px;
+  color:white;
+  font-size: 1.2rem;
+}
+a{
+  color:white;
+  text-decoration: none;
+} 
+.contact {
+width: 100%;
+padding:20px;
+margin-top:40px;
+border:3px #0ef solid;
+border-radius: 10px;
+}
+.contact header{
+text-align: center;
+color:#0ef;
+}
+.contact section{
+width: 100%;
+display: flex;
+flex-wrap: wrap;
+justify-content: space-between;
+align-items:center;
+margin-top: 20px;
+border-bottom: 2px #0ef dashed;
+}
+.icon{
+width:50%;
+display: flex;
+justify-content: center;
+align-items: center;
+}
+.contactvalue{
+width:50%;
+font-size: 1.1rem;
+display: flex;
+justify-content: center;
+align-items: center;
+}
+.contact a:hover{
+  color:#0ef;
+  font-size: 1.1rem;
+}
+.whatsapp{
+border-bottom: 0px !important;
+}
+.icon i{
+font-size:2rem;
+color:#0ef;
+}
+
+@media (min-width:900px) {
+  .content .card{
+      width:41%;
+      padding:7px;
+      height: 350px;
+  }
+  body{
+    margin: 0px 200px 0px 200px;
+  }
+  .allpage{
+    width:900px;
+  }
+  .icon{
+    width:50%
+  }
+  .contactvalue{
+    width: 50%;
+  }
+}
