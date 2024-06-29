@@ -1,5 +1,58 @@
 // Nav Bar
 
+// utilts
+function getResult(data) {
+  let result = {};
+  let flag = true;
+  authData = data.Headers["ARC-Authentication-Results"]
+  if (authData.includes("spf=pass")) {
+    result["spf"] = "Pass";
+  } else {
+    result["spf"] = "Fail";
+    flag = false;
+  }
+  if (authData.includes("dkim=pass")) {
+    result["dkim"] = "Pass";
+  } else {
+    result["dkim"] = "Fail";
+    flag = false;
+  }
+  if (authData.includes("dmarc=pass")) {
+    result["dmarc"] = "Pass";
+  } else {
+    result["dmarc"] = "Fail";
+    flag = false;
+  }
+  if (data.URLs) {
+    if (data.URLs.harm.length > 0) {
+      result["URLs"] = "Fail";
+      flag = false;
+    } else {
+      result["URLs"] = "Pass";
+    }
+  }
+  if (data.Attachment) {
+    result["Attachment"] = data.Attachment;
+    if (data.Attachment !== "Safe") {
+      flag = false;
+    }
+  }
+  if (data.Headers['From'].includes(data.Headers['Return-Path'])) {
+    result["Return-Path"] = "Pass";
+  } else {
+    result["Return-Path"] = "Fail";
+    flag = false;
+  }
+  if (flag) {
+    result['Final'] = 'Safe';
+  } else {
+    result['Final'] = 'Malicious';
+  }
+  console.log(result);
+  return result;
+}
+
+
 const toggleBtn = document.querySelector('.menu');
 const toggleBtnIcon = toggleBtn.querySelector('i');
 const dropDownMenu = document.querySelector('.dropdown-menu');
@@ -307,9 +360,10 @@ async function analyzeEmail() {
       new_res.then((res) => {
         res.json().then((data) => {
           console.log(data);
+          result1 = getResult(data.result);
           setTimeout(() => {
             getHome();
-          }, 10000);
+          }, 100000000);
         });
       });
     }
