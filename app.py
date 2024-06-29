@@ -250,6 +250,7 @@ def HandleEmailMessage(email_body, email_message):
 
     # Check if the email has attachments
     if email_message.get_content_maintype() == 'multipart':
+        sha256_hash = None
         for part in email_message.get_payload():
             # Check if the attachment is a file
             if part.get_content_maintype() == 'application':
@@ -267,8 +268,8 @@ def HandleEmailMessage(email_body, email_message):
                 # Calculate the attachment's SHA256 hash
                 sha256_hash = hashlib.sha256(attachment_data).hexdigest()
                 print(f'SHA256 Hash of attachment: {sha256_hash}')
-
-        HandleAttachment(sha256_hash)
+        if sha256_hash:
+            HandleAttachment(sha256_hash)
     else:
         print("No attachments found in provided email.")
         print('\n')
