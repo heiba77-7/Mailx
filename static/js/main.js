@@ -24,7 +24,7 @@ function getResult(data) {
     flag = false;
   }
   if (data.URLs) {
-    if (data.URLs.harm.length > 0) {
+    if (data.URLs.harm > 0) {
       result["URLs"] = "Fail";
       flag = false;
     } else {
@@ -51,7 +51,23 @@ function getResult(data) {
   console.log(result);
   return result;
 }
+function getreport(data){
+  console.log("///////////////////////////////")
+  var resutlhtml=``
+  for (const [key, value] of Object.entries(data)) {
+    console.log(`${key}: ${value}`);
+    resutlhtml+=`
+    <section class="result">
+    <div class="wordreslut ${(value === 'Pass' || value ==="Safe") ? "" : "redresult"}">${key}</div>
+    <div class="resulttext">${value}</div>
+    </section>
+    `;
+  }
+  document.querySelector(".content").innerHTML=resutlhtml;
 
+  console.log(resutlhtml)
+  
+}
 
 const toggleBtn = document.querySelector('.menu');
 const toggleBtnIcon = toggleBtn.querySelector('i');
@@ -86,8 +102,7 @@ var homehtml=`<section class="rightcontent">
 </section>`;
 document.querySelector(".home").addEventListener(
   "click",function(){
-    document.querySelector(".content").innerHTML=homehtml;
-    window.location.reload();
+    getHome();
   }
 )
 function getHome(){
@@ -360,10 +375,8 @@ async function analyzeEmail() {
       new_res.then((res) => {
         res.json().then((data) => {
           console.log(data);
-          result1 = getResult(data.result);
-          setTimeout(() => {
-            getHome();
-          }, 100000000);
+          reportresult = getResult(data.result);
+          getreport(reportresult)
         });
       });
     }
