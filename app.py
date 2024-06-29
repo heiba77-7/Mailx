@@ -343,7 +343,7 @@ def result():
 
 @app.route('/analyze', methods=['POST'])
 def upload_file():
-    
+    Result.clear()
     if 'file' not in request.files:
         flash('No file part')
         return {"error" : "no file found "}
@@ -361,5 +361,5 @@ def upload_file():
         
 
 if __name__ == '__main__':
-    app.run(debug=False,host='0,0,0,0')
+    app.run(debug=False)
 ###############################################################################################
