@@ -37,10 +37,14 @@ document.querySelector(".home").addEventListener(
     window.location.reload();
   }
 )
+function getHome(){
+  document.querySelector(".content").innerHTML=homehtml;
+  window.location.href="/";
+}
+
 document.querySelector(".dropdownhome").addEventListener(
   "click",function(){
-    document.querySelector(".content").innerHTML=homehtml;
-    window.location.reload();
+    getHome();
   }
 )
 
@@ -238,6 +242,9 @@ var contacthtml=`<div class="contact">
     <div class="contactvalue"><a href="http://wa.me/+2001064798913"><h4>+20 106 479 8913</h4></a></div>
 </section>
 </div>`;
+
+var loadinghtml=`<div class="load"></div>`;
+
 document.querySelector(".contactpage").addEventListener(
   "click",function(){
     document.querySelector(".content").innerHTML=contacthtml;
@@ -286,17 +293,28 @@ async function analyzeEmail() {
   const file = fileInput.files[0];
   formData.append("file", file);
 
-  const response = await fetch("/analyze", {
+  const response = fetch("/analyze", {
   // const response = await fetch("/upload", {
     method: "POST",
     body: formData,
   });
+  document.querySelector(".content").innerHTML=loadinghtml;
+  response.then((res) => {
+    if (res.status === 200) {
+      new_res = fetch("/result", {
+        method: "GET",
+      });
+      new_res.then((res) => {
+        res.json().then((data) => {
+          console.log(data);
+          setTimeout(() => {
+            getHome();
+          }, 10000);
+        });
+      });
+    }
+  });
 
-  const res = await fetch('/result', {
-    method: 'GET'
-  })
-  const result = await res.json();
-  console.log("Last Result", result);
   // document.getElementById("result").textContent = result.result;
   console.log("Finish")
 }
