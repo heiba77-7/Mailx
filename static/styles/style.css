@@ -492,7 +492,9 @@ color:#0ef;
     color: #ff0000 !important;
     border:5px #ff0000 solid !important;
 }
-
+.innerlogo i:hover{
+  color:#0ef;
+}
 @media (min-width:900px) {
   .content .card{
       width:41%;

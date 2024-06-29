@@ -6,21 +6,21 @@ function getResult(data) {
   let flag = true;
   authData = data.Headers["ARC-Authentication-Results"]
   if (authData.includes("spf=pass")) {
-    result["spf"] = "Pass";
+    result["SPF"] = "Pass";
   } else {
-    result["spf"] = "Fail";
+    result["SPF"] = "Fail";
     flag = false;
   }
   if (authData.includes("dkim=pass")) {
-    result["dkim"] = "Pass";
+    result["DKIM"] = "Pass";
   } else {
-    result["dkim"] = "Fail";
+    result["DKIM"] = "Fail";
     flag = false;
   }
   if (authData.includes("dmarc=pass")) {
-    result["dmarc"] = "Pass";
+    result["DMARC"] = "Pass";
   } else {
-    result["dmarc"] = "Fail";
+    result["DMARC"] = "Fail";
     flag = false;
   }
   if (data.URLs) {
@@ -38,9 +38,9 @@ function getResult(data) {
     }
   }
   if (data.Headers['From'].includes(data.Headers['Return-Path'])) {
-    result["Return-Path"] = "Pass";
+    result["R-Path"] = "Pass";
   } else {
-    result["Return-Path"] = "Fail";
+    result["R-Path"] = "Fail";
     flag = false;
   }
   if (flag) {
@@ -53,6 +53,8 @@ function getResult(data) {
 }
 function getreport(data){
   console.log("///////////////////////////////")
+  logohtml=`<i class="fa-regular fa-circle-xmark"></i>`;
+  document.querySelector(".innerlogo").innerHTML=logohtml;
   var resutlhtml=``
   for (const [key, value] of Object.entries(data)) {
     console.log(`${key}: ${value}`);
@@ -210,22 +212,6 @@ var memberhtml=`    <header class="header"><h1>Our Team</h1></header>
         <div class="breif">Networking | CyberSecurity associate </div>
         
     </div>
-    <div class="card">
-        <div class="image">
-            <img src="/static/images/heiba.jpg" alt="">
-        </div>
-        <div class="name">
-            <a href="https://www.linkedin.com/in/mohamed-sabri-2a40a8289/">
-            <h3>Mohamed Sabri</h3>
-            </a>
-        </div>
-        <div class="job">
-            <h4>Communcation Engineer FEE 58</h4>
-        </div>
-        <div class="breif">Software Engineer | .NET | Angular </div>
-        
-    </div>
-    
 </section>
 
 `;
