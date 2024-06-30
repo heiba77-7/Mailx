@@ -4,8 +4,8 @@
 function getResult(data) {
   let result = {};
   let flag = true;
-  authData = data.Headers["ARC-Authentication-Results"]
-  if(authData){
+  authData = data.Headers["ARC-Authentication-Results"];
+  if (authData) {
     if (authData.includes("spf=pass")) {
       result["SPF"] = "Pass";
     } else {
@@ -26,8 +26,8 @@ function getResult(data) {
     }
   } else {
     result["SPF"] = null;
-    result["DKIM"]=null;
-    result["DMARC"]=null;
+    result["DKIM"] = null;
+    result["DMARC"] = null;
   }
   if (data.URLs) {
     if (data.URLs.harm > 0) {
@@ -47,93 +47,100 @@ function getResult(data) {
   } else {
     result["Attachment"] = "UnFound";
   }
-  if (data.Headers||data.Headers['From'].includes(data.Headers['Return-Path'])) {
+  if (
+    data.Headers ||
+    data.Headers["From"].includes(data.Headers["Return-Path"])
+  ) {
     result["R-Path"] = "Identical";
   } else {
     result["R-Path"] = "Not-Identical";
     flag = false;
   }
   if (flag) {
-    result['Final'] = 'Safe';
+    result["Final"] = "Safe";
   } else {
-    result['Final'] = 'Malicious';
+    result["Final"] = "Malicious";
   }
-  console.log(result)
+  console.log(result);
   return result;
 }
 
-function getreport(data,result){
-  console.log("///////////////////////////////")
-  logohtml=`<i class="fa-regular fa-circle-xmark"></i>`;
-  document.querySelector(".innerlogo").innerHTML=logohtml;
-  var resutlhtml=``
+function getreport(data, result) {
+  logohtml = `<i class="fa-regular fa-circle-xmark"></i>`;
+  document.querySelector(".innerlogo").innerHTML = logohtml;
+  var resutlhtml = ``;
   for (const [key, value] of Object.entries(data)) {
-    if(value && key !=="Final"){
-    console.log(`${key}: ${value}`);
-    resutlhtml+=`
+    if (value && key !== "Final") {
+      resutlhtml += `
     <section class="result">
-    <div class="wordreslut ${(value === 'Pass' || value ==="Safe" || value =="UnFound"||value=== "Identical") ? "" : "redresult"}">${key}</div>
+    <div class="wordreslut ${
+      value === "Pass" ||
+      value === "Safe" ||
+      value == "UnFound" ||
+      value === "Identical"
+        ? ""
+        : "redresult"
+    }">${key}</div>
     <div class="resulttext">${value}</div>
     </section>
     `;
     }
   }
-  summaryhtml=``;
-  if(result.Attachment){
-    summaryhtml+=`<li>The Attachment Hash Of SHA256 IS ${result.Attachment}</li>`
+  summaryhtml = ``;
+  if (result.Attachment) {
+    summaryhtml += `<li>The Attachment Hash Of SHA256 IS ${result.Attachment}</li>`;
   }
-  if(data["R-Path"]){
-    summaryhtml+=`<li>The Return path is ${data['R-Path']} to Sender path</li>`
+  if (data["R-Path"]) {
+    summaryhtml += `<li>The Return path is ${data["R-Path"]} to Sender path</li>`;
   }
-  if(result.Links){
-    summaryhtml+=`<li>Found ${result.Links.length} URL in email</li>`
+  if (result.Links) {
+    summaryhtml += `<li>Found ${result.Links.length} URL in email</li>`;
   }
-  if(result.URLs){
-    summaryhtml+=`<li>After we analysed url in ${result.URLs.clean+result.URLs.harm} Security Vendor ${result.URLs.clean} Clean
+  if (result.URLs) {
+    summaryhtml += `<li>After we analysed url in ${
+      result.URLs.clean + result.URLs.harm
+    } Security Vendor ${result.URLs.clean} Clean
     and ${result.URLs.harm} Harm
-    </li>`
+    </li>`;
   }
-  totalsummaryhtml=`<section class="summaryresult">
+  totalsummaryhtml = `<section class="summaryresult">
   <section class="summarytext">
   <header ><h2>Summary : </h2></header>
   <ol>
       ${summaryhtml}
   </ol>
-</section>`
-  resutlhtml+=totalsummaryhtml;
-  resutlhtml+=`    <section class="result">
-  <div class="wordreslut ${( data['Final'] ==="Safe") ? "" : "redresult"}">Final-R</div>
+</section>`;
+  resutlhtml += totalsummaryhtml;
+  resutlhtml += `    <section class="result">
+  <div class="wordreslut ${
+    data["Final"] === "Safe" ? "" : "redresult"
+  }">Final-R</div>
   <div class="resulttext">${data["Final"]}</div>
-  </section>`
-  resutlhtml+=`
+  </section>`;
+  resutlhtml += `
       <section class="resultexit">
       <i class="fa-solid fa-arrow-right-from-bracket"></i>
-      </section>`
-  document.querySelector(".content").innerHTML=resutlhtml;
-  document.querySelector(".resultexit").addEventListener(
-    "click",function(){
-      getHome();
-    }
-  )
-  console.log(resutlhtml)
-  
+      </section>`;
+  document.querySelector(".content").innerHTML = resutlhtml;
+  document.querySelector(".resultexit").addEventListener("click", function () {
+    getHome();
+  });
 }
 
-const toggleBtn = document.querySelector('.menu');
-const toggleBtnIcon = toggleBtn.querySelector('i');
-const dropDownMenu = document.querySelector('.dropdown-menu');
+const toggleBtn = document.querySelector(".menu");
+const toggleBtnIcon = toggleBtn.querySelector("i");
+const dropDownMenu = document.querySelector(".dropdown-menu");
 
 toggleBtn.onclick = function () {
-  dropDownMenu.classList.toggle('open');
-  const isOpen = dropDownMenu.classList.contains('open');
-  toggleBtnIcon.classList.toggle('fa-bars', !isOpen);
-  toggleBtnIcon.classList.toggle('fa-xmark', isOpen);
+  dropDownMenu.classList.toggle("open");
+  const isOpen = dropDownMenu.classList.contains("open");
+  toggleBtnIcon.classList.toggle("fa-bars", !isOpen);
+  toggleBtnIcon.classList.toggle("fa-xmark", isOpen);
 };
-
 
 // Nav Bar Ends
 //home js
-var homehtml=`<section class="rightcontent">
+var homehtml = `<section class="rightcontent">
 <div class="right">
     <div class="header"><h1>Mailx</h1></div>
     <div class="drop-zone" id="drop-zone">
@@ -150,24 +157,20 @@ var homehtml=`<section class="rightcontent">
 </section>
 </section>
 </section>`;
-document.querySelector(".home").addEventListener(
-  "click",function(){
-    getHome();
-  }
-)
-function getHome(){
-  document.querySelector(".content").innerHTML=homehtml;
-  window.location.href="/";
+document.querySelector(".home").addEventListener("click", function () {
+  getHome();
+});
+function getHome() {
+  document.querySelector(".content").innerHTML = homehtml;
+  window.location.href = "/";
 }
 
-document.querySelector(".dropdownhome").addEventListener(
-  "click",function(){
-    getHome();
-  }
-)
+document.querySelector(".dropdownhome").addEventListener("click", function () {
+  getHome();
+});
 
 //member js
-var memberhtml=`    <header class="header"><h1>Our Team</h1></header>
+var memberhtml = `    <header class="header"><h1>Our Team</h1></header>
 <section class="content">
     <div class="card">
         <div class="image">
@@ -263,19 +266,17 @@ var memberhtml=`    <header class="header"><h1>Our Team</h1></header>
 </section>
 
 `;
-document.querySelector(".members").addEventListener(
-  "click",function(){
-    document.querySelector(".content").innerHTML=memberhtml;
-  }
-)
-document.querySelector(".dropdownmembers").addEventListener(
-  "click",function(){
-    document.querySelector(".content").innerHTML=memberhtml;
-  }
-)
-//about me page 
+document.querySelector(".members").addEventListener("click", function () {
+  document.querySelector(".content").innerHTML = memberhtml;
+});
+document
+  .querySelector(".dropdownmembers")
+  .addEventListener("click", function () {
+    document.querySelector(".content").innerHTML = memberhtml;
+  });
+//about me page
 
-var abouthtml=`<header class="abouttoolheader">
+var abouthtml = `<header class="abouttoolheader">
 <h1>About Mailx</h1>
 </header>
 </div>
@@ -315,18 +316,14 @@ according to collected datasets more than 20000 emails between phishing and safe
 </sectio>
 </section>
 `;
-document.querySelector(".dropdownabout").addEventListener(
-  "click",function(){
-    document.querySelector(".content").innerHTML=abouthtml;
-  }
-)
-document.querySelector(".about").addEventListener(
-  "click",function(){
-    document.querySelector(".content").innerHTML=abouthtml;
-  }
-)
+document.querySelector(".dropdownabout").addEventListener("click", function () {
+  document.querySelector(".content").innerHTML = abouthtml;
+});
+document.querySelector(".about").addEventListener("click", function () {
+  document.querySelector(".content").innerHTML = abouthtml;
+});
 
-var contacthtml=`<div class="contact">
+var contacthtml = `<div class="contact">
 <header><h1>Contact Us</h1></header>
 <section class="phone">
     <div class="icon"><i class="fa-solid fa-phone"></i></div>
@@ -346,18 +343,16 @@ var contacthtml=`<div class="contact">
 </section>
 </div>`;
 
-var loadinghtml=`<div class="load"></div>`;
+var loadinghtml = `<div class="load"></div>`;
 
-document.querySelector(".contactpage").addEventListener(
-  "click",function(){
-    document.querySelector(".content").innerHTML=contacthtml;
-  }
-)
-document.querySelector(".dropdowncontactpage").addEventListener(
-  "click",function(){
-    document.querySelector(".content").innerHTML=contacthtml;
-  }
-)
+document.querySelector(".contactpage").addEventListener("click", function () {
+  document.querySelector(".content").innerHTML = contacthtml;
+});
+document
+  .querySelector(".dropdowncontactpage")
+  .addEventListener("click", function () {
+    document.querySelector(".content").innerHTML = contacthtml;
+  });
 
 const dropZone = document.getElementById("drop-zone");
 const fileInput = document.getElementById("file-input");
@@ -397,11 +392,11 @@ async function analyzeEmail() {
   formData.append("file", file);
 
   const response = fetch("/analyze", {
-  // const response = await fetch("/upload", {
+    // const response = await fetch("/upload", {
     method: "POST",
     body: formData,
   });
-  document.querySelector(".content").innerHTML=loadinghtml;
+  document.querySelector(".content").innerHTML = loadinghtml;
   response.then((res) => {
     if (res.status === 200) {
       new_res = fetch("/result", {
@@ -411,12 +406,9 @@ async function analyzeEmail() {
         res.json().then((data) => {
           console.log(data);
           reportresult = getResult(data.result);
-          getreport(reportresult,data.result)
+          getreport(reportresult, data.result);
         });
       });
     }
   });
-
-  // document.getElementById("result").textContent = result.result;
-  console.log("Finish")
 }

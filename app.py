@@ -9,7 +9,6 @@ import json
 from flask import Flask, render_template, request, redirect, url_for, flash
 
 Result = {}
-# output={}
 api_key = '0cb4957d7d16fc57a4fd90679ecd0ce5d78587024854601f77ff67936a358a27'
 
 
@@ -26,7 +25,6 @@ def analyze_file(file_path):
 
         # output['SHA256 Hash of email']=sha256
         Result['SHA256-Hash-email']=sha256
-        print('\n')
 
         analyze_email(file_path)
 
@@ -44,20 +42,12 @@ def analyze_email(file_path):
                 header_value = header_value.decode(charset)
             
             headers[header_name] = header_value
-            print(header_name, ':', header_value)
-            # output['Message Header:']='Message Header'
-        
-            # output[f'header_name:' ] = header_name
-            # output[f"header_value:"] = header_value
 
         Result['Headers'] = headers     
-        print('\n')
 
         # Extract the email's body
         email_body = email_message.get_payload()
         # Use regular expressions to find all links in the email's body
-        # print(email_body)
-        # output['email_body:']=email_body:
         try:
             email_body = email_body[0].as_string()
         except:
@@ -65,33 +55,11 @@ def analyze_email(file_path):
 
         links = re.findall(r'https?://(?:[-\w.]|(?:%[\da-fA-F]{2}))+', email_body)
         Result['Links'] = list(set(links.copy()))
-        if links:
-            print('links found in email:')
-            # output['links found in email:'] =[]
-            for link in links:
-                print(link)
-                # output['links found in email:'].append(link)
-        else:
-            print('No links found in email.')
-            # output['No links found in email:']='No links found in email.'
-        print('\n')
 
         urlsFound = re.findall(r'https?://\S+', email_body)
-        if urlsFound:
-            print('urlsFound found in email:')
-            # output['urlsFound found in email:']=[]
-            for url in urlsFound:
-                print(url)
-                # output['urlsFound found in email:'].append(url)
-
-        else:
-            print('No urlsFound/links found in email.')
-            # output['No urlsFound/links found in email.']='No urlsFound found in email.'        
-        print('\n')
 
         # Replace 'YOUR_API_KEY' with your actual VirusTotal API key
         url_to_scan = urlsFound  # Replace with the URL you want to scan
-
 
         response = scan_url(api_key, url_to_scan)
         urls = {"clean": 0, "harm": 0, "harmWebsites": [], "ratio": 0}
@@ -116,7 +84,6 @@ def analyze_email(file_path):
             sayHarm = []
             if result:
                 for key , value in result.items():
-                    print('Website' , key , 'State = ', value)
                     if value == 'clean site':
                         clean += 1
                     elif value == 'unrated site':
@@ -132,7 +99,6 @@ def analyze_email(file_path):
 
             else:
                 print('No Result Found')
-
             print("Script Finisihed Sucessfully")
         else:
             print('Script Finishing With Failure')
@@ -153,15 +119,12 @@ def scan_url(api_key, urls):
                 return json_response['scan_id']
             else:
                 print("Scan initiation failed. Response code:", json_response['response_code'])
-                # output["Scan Failed:"]=json_response['response_code'] 
                 return False 
         else:
             print("Error:", response.status_code, response.text)
-            # output["Error:"]= response.text
 
     except Exception as e:
        print("An error occurred:", e)
-    #    output["An error occurred"]=e
 
     
 def get_url_report(api_key, scan_id):
@@ -189,81 +152,43 @@ def HandleEmailMessage(email_body, email_message):
     # Use regular expressions to find all IP addresses in the email's body
     ip_addresses = re.findall(r'\b(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b', email_body)
     Result['IPs'] = list(set(ip_addresses.copy()))
-    if ip_addresses:
-        print('IPs addresses found in email:')
-        for ip in ip_addresses:
-            print(ip)
-    else:
-        print('No IPs found in email.')
-    print('\n')
 
     email_addresses = re.findall(r'[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}', email_body)
     Result['Emails'] = list(set(email_addresses.copy()))
-    if email_addresses:
-        print('Emails addresses found in email:')
-        for email1 in email_addresses:
-            print(email1)
-    else:
-        print('No email addresses found in email.')              
-    print('\n')
 
     emailInfo = {}
-    # Extract the email's subject
     if 'subject' in email_message:
         emailInfo['Subject'] = email_message["subject"]
-        print(f'Subject: {email_message["subject"]}')
 
-    print('\n')
-    # Extract the email's sender
     sender = email_message.get('From')
     emailInfo['Sender'] = sender
-    print(f'Sender: {sender}')
 
     # Extract the email's recipient
     recipient = email_message.get('To')
     emailInfo['Recipient'] = recipient
-    print(f'Recipient: {recipient}')
 
     # Extract the email's delivery information
     delivery_information = email_message.get('Delivery-date')
     emailInfo['Delivery-date'] = delivery_information
-    print(f'Delivery-date: {delivery_information}')
 
     print('\n')
     # Extract the email's DMARC information
     dmarc = email_message.get('DMARC-Filter')
     emailInfo['DMARC'] = dmarc
-    if dmarc:
-        print(f'DMARC: {dmarc}')
-    else:
-        print('No DMARC information found.')
 
     # Extract the email's SRF information
     spf = email_message.get('Authentication-Results')
     emailInfo['Authentication-Results'] = spf
-    if spf:
-        print(f'SPF: {spf}')
-    else:
-        print('No SPF information found.')
 
     # Extract the email's DKIM information
     dkim = email_message.get('DKIM-Signature')
     emailInfo['DKIM'] = dkim
-    if dkim:
-        print(f'DKIM: {dkim}')
-    else:
-        print('No DKIM information found.')
     # Extract the email's SPF information
 
     spf = email_message.get('Received-SPF')
     emailInfo['Received-SPF'] = spf
-    if spf:
-        print(f'SPF: {spf}')
-    else:
-        print('No SPF information found.')
 
     Result['EmailInfo'] = emailInfo
-    print('\n')
 
     # Check if the email has attachments
     if email_message.get_content_maintype() == 'multipart':
@@ -276,15 +201,12 @@ def HandleEmailMessage(email_body, email_message):
 
                 # Calculate the attachment's MD5 hash
                 md5_hash = hashlib.md5(attachment_data).hexdigest()
-                print(f'MD5 Hash of attachment: {md5_hash}')
 
                 # Calculate the attachment's SHA1 hash
                 sha1_hash = hashlib.sha1(attachment_data).hexdigest()
-                print(f'SHA1 Hash of attachment: {sha1_hash}')
 
                 # Calculate the attachment's SHA256 hash
                 sha256_hash = hashlib.sha256(attachment_data).hexdigest()
-                print(f'SHA256 Hash of attachment: {sha256_hash}')
         if sha256_hash:
             HandleAttachment(sha256_hash)
     else:
@@ -313,18 +235,13 @@ def format_report(report):
         'positives': report.get('data', {}).get('attributes', {}).get('last_analysis_stats', {}).get('malicious'),
         'total': sum(report.get('data', {}).get('attributes', {}).get('last_analysis_stats', {}).values()),
         'scan_results': report.get('data', {}).get('attributes', {}).get('last_analysis_results')
-        
     }
     return formatted_report
 
-    
 def HandleAttachment(file_hash):
     report = get_virustotal_report(api_key, file_hash)
     if report:
         formatted_report = format_report(report)
-        print("Formatted VirusTotal Report:")
-        for key,value in formatted_report['scan_results'].items():
-            print(key,':',value['result'])
         print('                    Hash is maliciuos')
         Result['Attachment'] = 'Malicious'
     else:
@@ -335,10 +252,8 @@ def HandleAttachment(file_hash):
 
 
 
-###############################################################################################
 from flask import Flask, render_template, request, redirect, url_for, flash, jsonify
 import os
-#from analyze import analyze_file  # Import the analysis function
 
 app = Flask(__name__)
 app.secret_key = 'supersecretkey'
@@ -379,5 +294,4 @@ def upload_file():
         
 
 if __name__ == '__main__':
-    app.run(debug=True)
-###############################################################################################
+    app.run(debug=False, host='0.0.0.0')

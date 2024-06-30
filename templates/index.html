@@ -1,80 +1,93 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <meta name="author" content="RhythmusByte" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Akhil Mahesh | Nav Bar</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500&family=Kanit&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{{url_for('static',filename='styles/style.css')}}">
-</head>
-<body>
-    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Malix</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+      integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500&family=Kanit&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="{{url_for('static',filename='styles/style.css')}}"
+    />
+  </head>
+  <body>
     <!-- Nav Bar -->
     <section class="allpage">
-        <div class="mycontent"> 
-              <header>
-    <div class="navbar">
-        <div class="logo">
-            <div href="#" class="innerlogo" onclick="window.location.href='/'">
+      <div class="mycontent">
+        <header>
+          <div class="navbar">
+            <div class="logo">
+              <div
+                href="#"
+                class="innerlogo"
+                onclick="window.location.href='/'"
+              >
                 Malix
+              </div>
             </div>
-        </div>
-        <div class="nav">
-            <ul>
+            <div class="nav">
+              <ul>
                 <li><a href="#" class="home">Home</a></li>
                 <li><a href="#" class="about">About</a></li>
                 <li><a href="#" class="members">Members</a></li>
                 <li><a href="#" class="contactpage">Contact</a></li>
-                
-            </ul>
-            <div class="menu"><i class="fa-solid fa-bars"></i></div>
-        </div>
-        <div class="dropdown-menu">
-            <ul>
+              </ul>
+              <div class="menu"><i class="fa-solid fa-bars"></i></div>
+            </div>
+            <div class="dropdown-menu">
+              <ul>
                 <li><a href="#" class="dropdownhome">Home</a></li>
                 <li><a href="#" class="dropdownabout">About</a></li>
                 <li><a href="#" class="dropdownmembers">Members</a></li>
                 <li><a href="#" class="dropdowncontactpage">Contact</a></li>
-            </ul>
-        </div>
-    </div>
-    <img src=""
-    </header>
-    </div>
+              </ul>
+            </div>
+          </div>
+        </header>
+      </div>
 
-    
-    <!-- Nav Bar Ends -->
-<section class="content">
+      <section class="content">
         <section class="rightcontent">
-            <div class="right">
-                <div class="header"><h1>Mailx</h1></div>
-                <div class="drop-zone" id="drop-zone">
-                    Drag & Drop your email file here or click to upload
-                </div>
-                <input type="file" id="file-input" style="display:none;">
-                <div class="button">
-                    <button onclick="analyzeEmail()">Analyze</button>
-                </div>
-                <div class="myresult">
-                    <p id="result"></p>
-                </div>
-            </div> 
+          <div class="right">
+            <div class="header"><h1>Mailx</h1></div>
+            <div class="drop-zone" id="drop-zone">
+              Drag & Drop your email file here or click to upload
+            </div>
+            <input type="file" id="file-input" style="display: none" />
+            <div class="button">
+              <button onclick="analyzeEmail()">Analyze</button>
+            </div>
+            <div class="myresult">
+              <p id="result"></p>
+            </div>
+          </div>
         </section>
-        </section>
-        </section>
-</section>
-
-
-
-
-    
-        
-</body>
-<script src="{{url_for('static',filename='js/main.js')}}"></script>
+      </section>
+    </section>
+  </body>
+  <script src="{{url_for('static',filename='js/main.js')}}"></script>
 </html>
