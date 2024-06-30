@@ -91,7 +91,6 @@ def analyze_email(file_path):
 
         # Replace 'YOUR_API_KEY' with your actual VirusTotal API key
         url_to_scan = urls  # Replace with the URL you want to scan
-
         response = scan_url(api_key, url_to_scan)
         if response:
             result = get_url_report(api_key, response)
@@ -129,7 +128,6 @@ def analyze_email(file_path):
 def scan_url(api_key, url):
     url_scan = 'https://www.virustotal.com/vtapi/v2/url/scan'
     params = {'apikey': api_key, 'url': url}
-    
     try:
         response = requests.post(url_scan, params=params)
         if response.status_code == 200:
@@ -365,5 +363,5 @@ def upload_file():
         
 
 if __name__ == '__main__':
-    app.run(debug=False,port='2000')
+    app.run(debug=True)
 ###############################################################################################

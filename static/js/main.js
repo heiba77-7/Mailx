@@ -24,42 +24,44 @@ function getResult(data) {
       result["DMARC"] = "Fail";
       flag = false;
     }
-    if (data.URLs) {
-      if (data.URLs.harm > 0) {
-        result["URLs"] = "Fail";
-        flag = false;
-      } else {
-        result["URLs"] = "Pass";
-      }
-    }
-    if (data.Attachment) {
-      result["Attachment"] = data.Attachment;
-      if (data.Attachment !== "Safe") {
-        flag = false;
-      }
-    }
-    if (data.Headers||data.Headers['From'].includes(data.Headers['Return-Path'])) {
-      result["R-Path"] = "Identical";
-    } else {
-      result["R-Path"] = "Not-Identical";
-      flag = false;
-    }
-    if (flag) {
-      result['Final'] = 'Safe';
-    } else {
-      result['Final'] = 'Malicious';
-    }
-  }else{
+  } else {
     result["SPF"] = null;
     result["DKIM"]=null;
     result["DMARC"]=null;
-    result["Attachment"]="UnFound";
-    result["URLs"]="UnFound";
-    result["Final"]="Safe"
+  }
+  if (data.URLs) {
+    if (data.URLs.harm > 0) {
+      result["URLs"] = "Fail";
+      flag = false;
+    } else {
+      result["URLs"] = "Pass";
+    }
+  } else {
+    result["URLs"] = "UnFound";
+  }
+  if (data.Attachment) {
+    result["Attachment"] = data.Attachment;
+    if (data.Attachment !== "Safe") {
+      flag = false;
+    }
+  } else {
+    result["Attachment"] = "UnFound";
+  }
+  if (data.Headers||data.Headers['From'].includes(data.Headers['Return-Path'])) {
+    result["R-Path"] = "Identical";
+  } else {
+    result["R-Path"] = "Not-Identical";
+    flag = false;
+  }
+  if (flag) {
+    result['Final'] = 'Safe';
+  } else {
+    result['Final'] = 'Malicious';
   }
   console.log(result)
   return result;
 }
+
 function getreport(data,result){
   console.log("///////////////////////////////")
   logohtml=`<i class="fa-regular fa-circle-xmark"></i>`;
