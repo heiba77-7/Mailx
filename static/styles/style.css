@@ -545,7 +545,15 @@ color:#0ef;
   position: relative;
   top: 100%;
 }
-
+.resultexit{
+  width: 100%;
+  font-size:2.5rem;
+  text-align: end;
+  margin-right: 30px;
+}
+.resultexit:hover{
+  color:#00eaff;
+}
 @media (min-width:900px) {
   .content .card{
       width:41%;

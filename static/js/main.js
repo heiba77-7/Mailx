@@ -105,9 +105,16 @@ function getreport(data,result){
   <div class="wordreslut ${( data['Final'] ==="Safe") ? "" : "redresult"}">Final-R</div>
   <div class="resulttext">${data["Final"]}</div>
   </section>`
-
+  resutlhtml+=`
+      <section class="resultexit">
+      <i class="fa-solid fa-arrow-right-from-bracket"></i>
+      </section>`
   document.querySelector(".content").innerHTML=resutlhtml;
-
+  document.querySelector(".resultexit").addEventListener(
+    "click",function(){
+      getHome();
+    }
+  )
   console.log(resutlhtml)
   
 }
