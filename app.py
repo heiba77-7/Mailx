@@ -64,7 +64,7 @@ def analyze_email(file_path):
             email_body = email_body
 
         links = re.findall(r'https?://(?:[-\w.]|(?:%[\da-fA-F]{2}))+', email_body)
-        Result['Links'] = links.copy()
+        Result['Links'] = list(set(links.copy()))
         if links:
             print('links found in email:')
             # output['links found in email:'] =[]
@@ -76,22 +76,38 @@ def analyze_email(file_path):
             # output['No links found in email:']='No links found in email.'
         print('\n')
 
-        urls = re.findall(r'https?://\S+', email_body)
-        if urls:
-            print('urls found in email:')
-            # output['urls found in email:']=[]
-            for url in urls:
+        urlsFound = re.findall(r'https?://\S+', email_body)
+        if urlsFound:
+            print('urlsFound found in email:')
+            # output['urlsFound found in email:']=[]
+            for url in urlsFound:
                 print(url)
-                # output['urls found in email:'].append(url)
+                # output['urlsFound found in email:'].append(url)
 
         else:
-            print('No urls/links found in email.')
-            # output['No urls/links found in email.']='No urls found in email.'        
+            print('No urlsFound/links found in email.')
+            # output['No urlsFound/links found in email.']='No urlsFound found in email.'        
         print('\n')
 
         # Replace 'YOUR_API_KEY' with your actual VirusTotal API key
-        url_to_scan = urls  # Replace with the URL you want to scan
+        url_to_scan = urlsFound  # Replace with the URL you want to scan
+
+
         response = scan_url(api_key, url_to_scan)
+        urls = {"clean": 0, "harm": 0, "harmWebsites": [], "ratio": 0}
+        Result['URLs'] = urls
+        correct_urls = []
+
+        if not response:
+            for url in urls:
+                response = scan_url(api_key, url)
+                if not response:
+                    continue
+                correct_urls.append(url)
+
+        if len(correct_urls) > 0:
+            response = scan_url(api_key, correct_urls)
+
         if response:
             result = get_url_report(api_key, response)
             clean = 0
@@ -114,20 +130,20 @@ def analyze_email(file_path):
                 urls['ratio'] = clean / (clean + harm) * 100
                 print('Url is safe')
 
-                Result['URLs'] = urls
             else:
                 print('No Result Found')
 
             print("Script Finisihed Sucessfully")
         else:
             print('Script Finishing With Failure')
+        Result['URLs'] = urls
 
         HandleEmailMessage(email_body, email_message)
 
 
-def scan_url(api_key, url):
+def scan_url(api_key, urls):
     url_scan = 'https://www.virustotal.com/vtapi/v2/url/scan'
-    params = {'apikey': api_key, 'url': url}
+    params = {'apikey': api_key, 'url': urls}
     try:
         response = requests.post(url_scan, params=params)
         if response.status_code == 200:
