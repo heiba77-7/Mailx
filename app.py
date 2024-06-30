@@ -57,9 +57,12 @@ def analyze_email(file_path):
         email_body = email_message.get_payload()
         # Use regular expressions to find all links in the email's body
         # print(email_body)
-        # output['email_body:']=email_body
+        # output['email_body:']=email_body:
+        try:
+            email_body = email_body[0].as_string()
+        except:
+            email_body = email_body
 
-        email_body=email_body[0].as_string()
         links = re.findall(r'https?://(?:[-\w.]|(?:%[\da-fA-F]{2}))+', email_body)
         Result['Links'] = links.copy()
         if links:
