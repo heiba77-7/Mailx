@@ -5,66 +5,105 @@ function getResult(data) {
   let result = {};
   let flag = true;
   authData = data.Headers["ARC-Authentication-Results"]
-  if (authData.includes("spf=pass")) {
-    result["SPF"] = "Pass";
-  } else {
-    result["SPF"] = "Fail";
-    flag = false;
-  }
-  if (authData.includes("dkim=pass")) {
-    result["DKIM"] = "Pass";
-  } else {
-    result["DKIM"] = "Fail";
-    flag = false;
-  }
-  if (authData.includes("dmarc=pass")) {
-    result["DMARC"] = "Pass";
-  } else {
-    result["DMARC"] = "Fail";
-    flag = false;
-  }
-  if (data.URLs) {
-    if (data.URLs.harm > 0) {
-      result["URLs"] = "Fail";
-      flag = false;
+  if(authData){
+    if (authData.includes("spf=pass")) {
+      result["SPF"] = "Pass";
     } else {
-      result["URLs"] = "Pass";
-    }
-  }
-  if (data.Attachment) {
-    result["Attachment"] = data.Attachment;
-    if (data.Attachment !== "Safe") {
+      result["SPF"] = "Fail";
       flag = false;
     }
+    if (authData.includes("dkim=pass")) {
+      result["DKIM"] = "Pass";
+    } else {
+      result["DKIM"] = "Fail";
+      flag = false;
+    }
+    if (authData.includes("dmarc=pass")) {
+      result["DMARC"] = "Pass";
+    } else {
+      result["DMARC"] = "Fail";
+      flag = false;
+    }
+    if (data.URLs) {
+      if (data.URLs.harm > 0) {
+        result["URLs"] = "Fail";
+        flag = false;
+      } else {
+        result["URLs"] = "Pass";
+      }
+    }
+    if (data.Attachment) {
+      result["Attachment"] = data.Attachment;
+      if (data.Attachment !== "Safe") {
+        flag = false;
+      }
+    }
+    if (data.Headers||data.Headers['From'].includes(data.Headers['Return-Path'])) {
+      result["R-Path"] = "Identical";
+    } else {
+      result["R-Path"] = "Not-Identical";
+      flag = false;
+    }
+    if (flag) {
+      result['Final'] = 'Safe';
+    } else {
+      result['Final'] = 'Malicious';
+    }
+  }else{
+    result["SPF"] = null;
+    result["DKIM"]=null;
+    result["DMARC"]=null;
+    result["Attachment"]="UnFound";
+    result["URLs"]="UnFound";
+    result["Final"]="Safe"
   }
-  if (data.Headers['From'].includes(data.Headers['Return-Path'])) {
-    result["R-Path"] = "Pass";
-  } else {
-    result["R-Path"] = "Fail";
-    flag = false;
-  }
-  if (flag) {
-    result['Final'] = 'Safe';
-  } else {
-    result['Final'] = 'Malicious';
-  }
-  console.log(result);
+  console.log(result)
   return result;
 }
-function getreport(data){
+function getreport(data,result){
   console.log("///////////////////////////////")
   logohtml=`<i class="fa-regular fa-circle-xmark"></i>`;
   document.querySelector(".innerlogo").innerHTML=logohtml;
   var resutlhtml=``
   for (const [key, value] of Object.entries(data)) {
+    if(value && key !=="Final"){
     console.log(`${key}: ${value}`);
     resutlhtml+=`
     <section class="result">
-    <div class="wordreslut ${(value === 'Pass' || value ==="Safe") ? "" : "redresult"}">${key}</div>
+    <div class="wordreslut ${(value === 'Pass' || value ==="Safe" || value =="UnFound"||value=== "Identical") ? "" : "redresult"}">${key}</div>
     <div class="resulttext">${value}</div>
     </section>
     `;
+    }
   }
+  summaryhtml=``;
+  if(result.Attachment){
+    summaryhtml+=`<li>The Attachment Hash Of SHA256 IS ${result.Attachment}</li>`
+  }
+  if(data["R-Path"]){
+    summaryhtml+=`<li>The Return path is ${data['R-Path']} to Sender path</li>`
+  }
+  if(result.Links){
+    summaryhtml+=`<li>Found ${result.Links.length} URL in email</li>`
+  }
+  if(result.URLs){
+    summaryhtml+=`<li>After we analysed url in ${result.URLs.clean+result.URLs.harm} Security Vendor ${result.URLs.clean} Clean
+    and ${result.URLs.harm} Harm
+    </li>`
+  }
+  totalsummaryhtml=`<section class="summaryresult">
+  <section class="summarytext">
+  <header ><h2>Summary : </h2></header>
+  <ol>
+      ${summaryhtml}
+  </ol>
+</section>`
+  resutlhtml+=totalsummaryhtml;
+  resutlhtml+=`    <section class="result">
+  <div class="wordreslut ${( data['Final'] ==="Safe") ? "" : "redresult"}">Final-R</div>
+  <div class="resulttext">${data["Final"]}</div>
+  </section>`
+
   document.querySelector(".content").innerHTML=resutlhtml;
 
   console.log(resutlhtml)
@@ -237,6 +276,7 @@ var abouthtml=`<header class="abouttoolheader">
 cybersecurity investigation tool used to detect the suspicious mails
 and prevent dealing with them utiize the AI technology
 in order to make the investigation process easier and faster than manual investigation
+Funded by  Egyptian Academy of  Scientific Research &Technology(ASRT)
 </h5></section>
 </section>
 <section class="mech">
@@ -362,7 +402,7 @@ async function analyzeEmail() {
         res.json().then((data) => {
           console.log(data);
           reportresult = getResult(data.result);
-          getreport(reportresult)
+          getreport(reportresult,data.result)
         });
       });
     }
