@@ -184,7 +184,7 @@ var memberhtml = `    <header class="header"><h1>Our Team</h1></header>
         <div class="job">
             <h4>Communcation Engineer FEE 55</h4>
         </div>
-        <div class="breif">Grc Specialist Trainee | CTF Player | ISC2 CC</div>
+        <div class="breif">GRC Specialist Trainee | CTF Player | ISC2 CC</div>
         
     </div>
     <div class="card">
@@ -261,7 +261,36 @@ var memberhtml = `    <header class="header"><h1>Our Team</h1></header>
             <h4>Communcation Engineer FEE 55</h4>
         </div>
         <div class="breif">Networking | CyberSecurity associate </div>
-        
+
+    </div>
+    
+    <div class="card">
+    <div class="image">
+        <img src="/static/images/Yousef.jpg" alt="">
+    </div>
+    <div class="name">
+        <a href="https://www.linkedin.com/in/youssef-bakier">
+        <h3>Yousef Bakier</h3>
+        </a>
+    </div>
+    <div class="job">
+        <h4>Communcation Engineer FEE 58</h4>
+    </div>
+    <div class="breif">Software Engineering | ALX Intern </div>
+    </div>
+    <div class="card">
+    <div class="image">
+        <img src="/static/images/heiba.jpg" alt="">
+    </div>
+    <div class="name">
+        <a href="https://www.linkedin.com/in/mohamed-sabri-2a40a8289/">
+        <h3>Mohamed Sabri</h3>
+        </a>
+    </div>
+    <div class="job">
+        <h4>Communcation Engineer FEE 55</h4>
+    </div>
+    <div class="breif">Software Engieering | React | .NET</div>
     </div>
 </section>
 
